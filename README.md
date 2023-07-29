@@ -1,5 +1,9 @@
 # live-server-nvim: plugin to run live-server in neovim
 
+
+https://github.com/ngtuonghy/live-server-nvim/assets/116539745/e0cdf3ce-d637-4903-a8dc-8830b2f99920
+
+
 ## Requirements
 
 [npm](https://www.npmjs.com/)
