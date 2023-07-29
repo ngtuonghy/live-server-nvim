@@ -1,12 +1,12 @@
 local M = {}
-Default_config = {
+local default_config = {
 	custom = {},
 	serverpath = vim.fn.stdpath("data") .. "/live-server/",
 	open = "folder", -- cwd
 }
 
-local open = Default_config.open
 local function getOpen()
+	local open = default_config.open
 	if open == "folder" then
 		return vim.fn.expand("%:p:h")
 	else
@@ -15,14 +15,14 @@ local function getOpen()
 end
 
 local function readCustom(config)
-	local cmd_table = { Default_config.serverpath .. "node_modules/.bin/live-server" }
+	local serverpath = default_config.serverpath
+	local cmd_table = { serverpath .. "node_modules/.bin/live-server" }
 	for _, option in pairs(config.custom) do
 		local cleaned_value = option:gsub("%s", "")
 		table.insert(cmd_table, cleaned_value)
 	end
 	return cmd_table
 end
-local cmd_table = readCustom(Default_config)
 
 local function strip_ansi_escape_sequences(input_string)
 	local ansi_escape_pattern = "\27%[%d;*%d*([mK])"
@@ -36,8 +36,8 @@ local function on_stdout(channel_id, data, name)
 	print(stripped_output)
 end
 
-local serverpath = Default_config.serverpath
 M.install = function()
+	local serverpath = default_config.serverpath
 	print("Installing live-server to " .. serverpath)
 	local install_cmd = { "npm", "i", "live-server", "--prefix", serverpath }
 	local string_installcmd = table.concat(install_cmd, " ")
@@ -53,6 +53,7 @@ M.install = function()
 end
 
 M.start = function()
+	local cmd_table = readCustom(default_config)
 	local realPath = getOpen()
 	table.insert(cmd_table, realPath)
 	local cmd_string = table.concat(cmd_table, " ")
@@ -80,8 +81,7 @@ M.toggle = function()
 end
 
 M.setup = function(config)
-	Default_config = vim.tbl_deep_extend("force", Default_config, config)
-	return Default_config
+	default_config = vim.tbl_deep_extend("force", default_config, config)
 end
 
 vim.cmd("command! LiveServerStart lua require'live-server-nvim'.start()")
