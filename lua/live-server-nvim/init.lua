@@ -82,7 +82,7 @@ M.setup = function(config)
 	return Default_config
 end
 
-vim.cmd("command! LiveSeverStart lua require'live-server'.start()")
-vim.cmd("command! LiveSeverStop lua require'live-server'.stop()")
-vim.cmd("command! LiveSeverInstall  lua require'live-server'.install()")
+vim.cmd("command! LiveSeverStart lua require'live-server-nvim'.start()")
+vim.cmd("command! LiveSeverStop lua require'live-server-nvim'.stop()")
+vim.cmd("command! LiveSeverInstall  lua require'live-server-nvim'.install()")
 return M
