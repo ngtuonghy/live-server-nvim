@@ -2,7 +2,7 @@
 
 ## Requirements
 
-<p>npm <a href="https://www.npmjs.com/" target="_blank">see</a></p>
+[npm](https://www.npmjs.com/)
 
 ## Installation
 
@@ -12,6 +12,8 @@
  require("lazy").setup({
   {
   "ngtuonghy/live-server-nvim",
+  event = "VeryLazy",
+  build = ":LiveServerInstall",
   config = functions()
   require("live-server-nvim").setup{}
   },
@@ -24,10 +26,10 @@
 
 ```lua
 require('live-server-nvim').setup{
- custom = {
+    custom = {
         "--port=8080",
         "--quiet",
-        "--no-css-inject",
+    :    "--no-css-inject",
     },
  serverpath = vim.fn.stdpath("data") .. "/live-server/",
  open = "folder", --folder|cwd
