@@ -15,28 +15,26 @@ https://github.com/ngtuonghy/live-server-nvim/assets/116539745/e0cdf3ce-d637-490
 ```lua
  require("lazy").setup({
   {
-  "ngtuonghy/live-server-nvim",
-  event = "VeryLazy",
-  build = ":LiveServerInstall",
-  config = functions()
-  require("live-server-nvim").setup{}
+    "ngtuonghy/live-server-nvim",
+    event = "VeryLazy",
+    build = ":LiveServerInstall",
+    config = functions()
+    require("live-server-nvim").setup{}
   },
 })
 ```
+# Configuration
 
-## Configuration
-
-- Recommended setup
+- live-server-nvim will not run without setup
 
 ```lua
-require('live-server-nvim').setup{
+require('live-server-nvim').setup {
     custom = {
         "--port=8080",
-        "--quiet",
         "--no-css-inject",
     },
- serverpath = vim.fn.stdpath("data") .. "/live-server/",
- open = "folder", --folder|cwd
+ serverPath = vim.fn.stdpath("data") .. "/live-server/", --default
+ open = "folder", -- folder|cwd     --default
 }
 
 ```
@@ -47,9 +45,9 @@ require('live-server-nvim').setup{
 ## Usage
 
 ```lua
-LiveServerStart--Run sever
-LiveServerStop --Stop sever
-LiveServerToggle --Toggle sever
+LiveServerStart--Run server
+LiveServerStop --Stop server
+LiveServerToggle --Toggle server
 ```
 
 - Custom mappings
