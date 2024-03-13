@@ -22,8 +22,7 @@ local function getOpen()
 end
 
 local function generateCommandListFromConfig()
-	local serverPath = defaultConfig.serverPath
-	local cmdTable = { serverPath .. "node_modules/.bin/live-server" }
+	local cmdTable = { defaultConfig.serverPath .. "node_modules/.bin/live-server" }
 	for _, option in pairs(defaultConfig.custom) do
 		local cleanedValue = option:gsub("%s", "")
 		table.insert(cmdTable, cleanedValue)
