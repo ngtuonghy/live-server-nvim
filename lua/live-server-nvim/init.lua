@@ -1,5 +1,5 @@
 local M = {}
-_G.defaultConfig = {
+local defaultConfig = {
 	custom = {},
 	serverPath = vim.fn.stdpath("data") .. "/live-server/",
 	open = "folder", -- cwd
@@ -87,7 +87,7 @@ M.toggle = function()
 end
 
 M.setup = function(config)
-	_G.defaultConfig = vim.tbl_deep_extend("force", defaultConfig, config)
+	defaultConfig = vim.tbl_deep_extend("force", defaultConfig, config)
 end
 
 vim.cmd("command! LiveServerStart lua require'live-server-nvim'.start()")
