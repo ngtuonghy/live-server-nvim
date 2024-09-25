@@ -46,7 +46,7 @@ require('live-server-nvim').setup {
 
 ## Usage
 
-```vim
+```lua
 LiveServerStart--Run server
 LiveServerStart -f    -- Serve the currently open file (Note: for this to work, `open` mode in setup must be set to "folder")
 LiveServerStop --Stop server
