@@ -1,9 +1,6 @@
 # live-server-nvim: plugin to run live-server in neovim
 
-
 https://github.com/ngtuonghy/live-server-nvim/assets/116539745/03613e49-fcc7-492a-8c70-040f2f8cb2b1
-
-
 
 ## Requirements
 
@@ -24,6 +21,7 @@ https://github.com/ngtuonghy/live-server-nvim/assets/116539745/03613e49-fcc7-492
   },
 })
 ```
+
 # Configuration
 
 - live-server-nvim will not run without setup
@@ -51,7 +49,18 @@ LiveServerStop --Stop server
 LiveServerToggle --Toggle server
 ```
 
-- Custom mappings
+## Starting the Server
+
+You can start the server with an optional -f flag to serve a specific file:
+
+```lua
+:LiveServerStart -- Serve the current directory by default
+:LiveServerStart       -- Serve the current directory by default
+:LiveServerStart -f    -- Serve the currently open file (Note: for this to work, `open` mode in setup must be set to "folder")
+
+```
+
+Custom mappings
 
 ```lua
 vim.keymap.set("n", "<leader>lt", function() require("live-server-nvim").toggle() end)

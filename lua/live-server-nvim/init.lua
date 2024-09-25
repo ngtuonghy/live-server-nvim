@@ -4,19 +4,32 @@ local defaultConfig = {
 	serverPath = vim.fn.stdpath("data") .. "/live-server/",
 	open = "folder", -- cwd
 }
+
 local function show_error_message(message)
 	vim.notify(message, vim.log.levels.ERROR, { title = "live-server-nvim" })
+end
+
+local function show_warning_message(message)
+	vim.notify(message, vim.log.levels.WARN, { title = "live-server-nvim" })
 end
 
 local function show_info_message(message)
 	vim.notify(message, vim.log.levels.INFO, { title = "live-server-nvim" })
 end
 
-local function getOpen()
+local function getOpen(is_file)
 	local open = defaultConfig.open
 	if open == "folder" then
+		if is_file then
+			return vim.fn.expand("%:p")
+		end
 		return vim.fn.expand("%:p:h")
 	else
+		show_warning_message(
+			"Configured to serve from the current working directory(cwd) but requested to serve a file. "
+				.. "Please adjust the configuration to use 'folder' mode for serving files."
+				.. "Serving the current working directory(cwd) as fallback"
+		)
 		return vim.fn.getcwd()
 	end
 end
@@ -60,9 +73,10 @@ M.install = function()
 	})
 end
 
-M.start = function()
+M.start = function(arg)
 	local cmdTable = generateCommandListFromConfig()
-	local realPath = getOpen()
+	local serving_file = arg == "-f"
+	local realPath = getOpen(serving_file)
 	table.insert(cmdTable, realPath)
 	local cmd_string = table.concat(cmdTable, " ")
 	SESSION_JOB = vim.fn.jobstart(cmd_string, { on_stdout = onStdout })
@@ -90,7 +104,7 @@ M.setup = function(config)
 	defaultConfig = vim.tbl_deep_extend("force", defaultConfig, config)
 end
 
-vim.cmd("command! LiveServerStart lua require'live-server-nvim'.start()")
+vim.cmd("command! -nargs=? LiveServerStart lua require'live-server-nvim'.start(<f-args>)")
 vim.cmd("command! LiveServerStop lua require'live-server-nvim'.stop()")
 vim.cmd("command! LiveServerToggle lua require'live-server-nvim'.toggle()")
 vim.cmd("command! LiveServerInstall  lua require'live-server-nvim'.install()")
