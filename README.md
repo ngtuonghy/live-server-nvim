@@ -2,9 +2,14 @@
 
 https://github.com/ngtuonghy/live-server-nvim/assets/116539745/03613e49-fcc7-492a-8c70-040f2f8cb2b1
 
-## Requirements
+##  Features
 
-[npm](https://www.npmjs.com/)
+ - Always find and run the index.html file regardless of where you are in the project root
+ - Run the currently opened file
+
+## Requiements
+
+ - [npm](https://docs.npmjs.com/cli)
 
 ## Installation
 
@@ -37,33 +42,23 @@ require('live-server-nvim').setup {
 }
 
 ```
-
-- Supported customized
-  [see live-server](https://github.com/tapio/live-server#usage-from-command-line)
+- Supported customized [see live-server](https://github.com/tapio/live-server#usage-from-command-line)
 
 ## Usage
 
-```lua
+```vim
 LiveServerStart--Run server
+LiveServerStart -f    -- Serve the currently open file (Note: for this to work, `open` mode in setup must be set to "folder")
 LiveServerStop --Stop server
 LiveServerToggle --Toggle server
 ```
-
-## Starting the Server
-
-You can start the server with an optional -f flag to serve a specific file:
-
-```lua
-:LiveServerStart -- Serve the current directory by default
-:LiveServerStart       -- Serve the current directory by default
-:LiveServerStart -f    -- Serve the currently open file (Note: for this to work, `open` mode in setup must be set to "folder")
-
-```
-
-Custom mappings
+## Custom mappings
 
 ```lua
 vim.keymap.set("n", "<leader>lt", function() require("live-server-nvim").toggle() end)
 ```
 
-## Thank you
+## Contributors
+Many thanks to those who have contributed to the project!
+
+[@beka-birhanu](https://github.com/beka-birhanu)
