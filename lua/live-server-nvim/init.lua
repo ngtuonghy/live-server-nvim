@@ -17,13 +17,28 @@ local function show_info_message(message)
 	vim.notify(message, vim.log.levels.INFO, { title = "live-server-nvim" })
 end
 
+-- Find the root project directory by traversing up the directory tree
+local function findRootProject()
+    local dir = vim.fn.expand("%:p:h")
+    while dir ~= '/' or vim.fn.isdirectory(dir .. "/.git") ~= 0 do
+        if vim.fn.filereadable(dir .. "/index.html") ~= 0 then
+            return dir
+        end
+        dir = vim.fn.fnamemodify(dir, ":h")
+    end
+    return nil
+end
+
 local function getOpen(is_file)
 	local open = defaultConfig.open
 	if open == "folder" then
 		if is_file then
+      if vim.fn.expand("%:e") ~= "html" then
+        return nil
+      end
 			return vim.fn.expand("%:p")
 		end
-		return vim.fn.expand("%:p:h")
+		return findRootProject()
 	else
 		show_warning_message(
 			"Configured to serve from the current working directory(cwd) but requested to serve a file. "
@@ -34,7 +49,7 @@ local function getOpen(is_file)
 	end
 end
 
-local function generateCommandListFromConfig()
+local function buildCommandList()
 	local cmdTable = { defaultConfig.serverPath .. "node_modules/.bin/live-server" }
 	for _, option in pairs(defaultConfig.custom) do
 		local cleanedValue = option:gsub("%s", "")
@@ -43,7 +58,7 @@ local function generateCommandListFromConfig()
 	return cmdTable
 end
 
-local function removeAnsiEscapeSequences(inputString)
+local function removeAnsiCodes(inputString)
 	local ansiEscapePattern = "\27%[%d;*%d*([mK])"
 	local strippedString = inputString:gsub(ansiEscapePattern, "")
 	return strippedString
@@ -51,7 +66,7 @@ end
 
 local function onStdout(channel_id, data, name)
 	local output = table.concat(data)
-	local strippedOutput = removeAnsiEscapeSequences(output)
+	local strippedOutput = removeAnsiCodes(output)
 	if string.match(strippedOutput, "http") then
 		show_info_message(strippedOutput)
 	end
@@ -65,18 +80,22 @@ M.install = function()
 	vim.fn.jobstart(stringInstallCmd, {
 		on_exit = function(_, code)
 			if code == 0 then
-				show_info_message("live-server has been installed at " .. serverPath)
+				show_info_message("live-server-nvim has been installed at " .. serverPath)
 			else
-				show_error_message("Failed to install live-server. Try again!")
+        show_error_message("Failed to install live-server. Please make sure npm is installed and try again!")
 			end
 		end,
 	})
 end
 
 M.start = function(arg)
-	local cmdTable = generateCommandListFromConfig()
+	local cmdTable = buildCommandList()
 	local serving_file = arg == "-f"
 	local realPath = getOpen(serving_file)
+  if realPath == nil then
+  show_error_message("Serving only html files")
+    return
+  end
 	table.insert(cmdTable, realPath)
 	local cmd_string = table.concat(cmdTable, " ")
 	SESSION_JOB = vim.fn.jobstart(cmd_string, { on_stdout = onStdout })
