@@ -25,7 +25,7 @@ https://github.com/ngtuonghy/live-server-nvim/assets/116539745/03613e49-fcc7-492
 	  config = function()
 	  require("live-server-nvim").setup({})
 	  end,
-	}, 
+    }, 
 })
 ```
 
