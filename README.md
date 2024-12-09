@@ -18,12 +18,14 @@ https://github.com/ngtuonghy/live-server-nvim/assets/116539745/03613e49-fcc7-492
 ```lua
  require("lazy").setup({
   {
-    "ngtuonghy/live-server-nvim",
-    event = "VeryLazy",
-    build = ":LiveServerInstall",
-    config = functions()
-    require("live-server-nvim").setup{}
-  },
+    {
+		"ngtuonghy/live-server-nvim",
+		event = "VeryLazy",
+		build = ":LiveServerInstall",
+		config = function()
+			require("live-server-nvim").setup({})
+		end,
+	    }, 
 })
 ```
 
@@ -32,14 +34,14 @@ https://github.com/ngtuonghy/live-server-nvim/assets/116539745/03613e49-fcc7-492
 - live-server-nvim will not run without setup
 
 ```lua
-require('live-server-nvim').setup {
+require('live-server-nvim').setup ({
     custom = {
         "--port=8080",
         "--no-css-inject",
     },
  serverPath = vim.fn.stdpath("data") .. "/live-server/", --default
  open = "folder", -- folder|cwd     --default
-}
+})
 
 ```
 - Supported customized [see live-server](https://github.com/tapio/live-server#usage-from-command-line)
